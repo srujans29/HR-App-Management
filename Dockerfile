@@ -1,7 +1,6 @@
-FROM ubuntu:latest
-RUN apt-get update -y
-RUN apt-get install apache2 -y
-WORKDIR /var/www/html
+FROM node:18
+WORKDIR /usr/src/app
+RUN npm install --production
 COPY . .
 EXPOSE 3000
-CMD apachectl -D FOREGROUND
+CMD ["npm","start"]
