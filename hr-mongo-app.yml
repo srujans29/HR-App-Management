@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hr-mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hr-mongodb
+  template: 
+    metadata:
+      labels:
+        app: hr-mongodb
+    spec:
+      containers:
+        - name: hr-mongodb
+          image:  mongo:latest
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+          - name: hr-mongodb-storagemongodb-storage
+            mountPath: /data/db
+      volumes: 
+        - name: hr-mongodb-storage
+          emptyDir: {}
+      
+---
+apiVersion: v1 
+kind: Service
+metadata:
+  name: hr-mongodb
+spec:
+  selector:
+    app: hr-mongodb
+  ports:
+    - port: 27017
+      targetPort: 27017
+  type: ClusterIP    
